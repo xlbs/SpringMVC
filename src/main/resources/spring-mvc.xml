@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+        xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xmlns:mvc="http://www.springframework.org/schema/mvc"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	http://www.springframework.org/schema/mvc
+    http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+
+    <!-- 开启注解模式驱动 -->
+    <mvc:annotation-driven></mvc:annotation-driven>
+
+    <!-- 自动扫描包，使SpringMVC认为包下用了@controller注解的类是控制器，多个,用“，”隔开 -->
+    <context:component-scan base-package="com.springmvc" ></context:component-scan>
+
+    <!-- 对静态资源的访问 -->
+    <mvc:resources location="/static/" mapping="/static/**"/>
+    <mvc:resources location="/plugs/" mapping="/plugs/**"/>
+
+    <!--（近似）总拦截器，拦截所有url-->
+    <mvc:interceptors>
+        <bean class="com.springmvc.spring.MyInteceptor"></bean>
+    </mvc:interceptors>
+
+    <!--视图解析器-->
+    <!--<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">-->
+        <!--<property name="prefix" value="/WEB-INF/pages/jsp/"/>-->
+        <!--<property name="suffix" value=".jsp"/>&lt;!&ndash;可为空,方便实现自已的依据扩展名来选择视图解释类的逻辑  &ndash;&gt;-->
+        <!--<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />-->
+    <!--</bean>-->
+
+    <!-- 多视图处理器 -->
+    <bean class="com.springmvc.spring.ManyViewResolver">
+        <property name="resolvers">
+            <map>
+                <entry key="jsp">
+                    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+                        <property name="prefix" value="/WEB-INF/pages/jsp/"/>
+                        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"></property>
+                    </bean>
+                </entry>
+                <entry key="ftl">
+                    <bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+                        <!--<property name="prefix" value="/WEB-INF/pages/ftl/"/>-->
+                        <!--<property name="cache" value="true"/>-->
+                        <property name="contentType" value="text/html;charset=UTF-8"></property>
+                        <!-- 宏命令的支持  -->
+                        <!--<property name="exposeSpringMacroHelpers" value="true"/>-->
+                        <property name="viewClass" value="org.springframework.web.servlet.view.freemarker.FreeMarkerView"/>
+                        <!--<property name="requestContextAttribute" value="rc"></property>-->
+                    </bean>
+                </entry>
+                <entry key="html">
+                    <bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+                        <!--<property name="prefix" value="/WEB-INF/pages/html/"/>-->
+                        <!--<property name="cache" value="true"/>-->
+                        <property name="contentType" value="text/html;charset=UTF-8"></property>
+                        <!-- 宏命令的支持  -->
+                        <!--<property name="exposeSpringMacroHelpers" value="true"/>-->
+                        <property name="viewClass" value="org.springframework.web.servlet.view.freemarker.FreeMarkerView"/>
+                        <!--<property name="requestContextAttribute" value="rc"></property>-->
+                    </bean>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+    <!-- freemarker 配置 -->
+    <bean id="freemarkerConfigurer" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+        <property name="templateLoaderPath" value="/WEB-INF/pages/view/" />
+        <property name="freemarkerSettings">
+            <props>
+                <prop key="template_update_delay">5</prop>
+                <prop key="default_encoding">UTF-8</prop>
+                <prop key="locale">zh_CN</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- 日志拦截器-->
+    <!--<bean id="logNDCInteceptor" class="com.xxx.core.web.LogNDCInteceptor"/>-->
+
+    <!-- 权限拦截器-->
+    <!--<bean id="myPermissionsInteceptor" class="com.xxx.userplatform.mvc.MyPermissionsInteceptor"></bean>-->
+
+    <!-- RequestHelper拦截器-->
+    <!--<bean id="myRequestHelperInteceptor" class="com.xxx.core.web.MyRequestHelperInteceptor"></bean>-->
+
+    <!-- 用户信息拦截器-->
+    <!--<bean id="myUserInfoInteceptor" class="com.xxx.userplatform.mvc.MyUserInfoInteceptor"></bean>-->
+
+    <!-- 注解请求映射  -->
+    <!--<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">-->
+    <!--<property name="interceptors">-->
+    <!--<list>-->
+    <!--<ref bean="logNDCInteceptor"/>   &lt;!&ndash; 日志拦截器 &ndash;&gt;-->
+    <!--<ref bean="myRequestHelperInteceptor"/>   &lt;!&ndash; RequestHelper拦截器&ndash;&gt;-->
+    <!--<ref bean="myPermissionsInteceptor"/>  &lt;!&ndash; 权限拦截器&ndash;&gt;-->
+    <!--<ref bean="myUserInfoInteceptor"/>  &lt;!&ndash; 用户信息拦截器&ndash;&gt;-->
+    <!--</list>-->
+    <!--</property>-->
+    <!--</bean>-->
+    <!--<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">-->
+    <!--<property name="messageConverters">-->
+    <!--<list>-->
+    <!--<ref bean="byteArray_hmc" />-->
+    <!--<ref bean="string_hmc" />-->
+    <!--<ref bean="resource_hmc" />-->
+    <!--<ref bean="source_hmc" />-->
+    <!--<ref bean="xmlAwareForm_hmc" />-->
+    <!--<ref bean="jaxb2RootElement_hmc" />-->
+    <!--<ref bean="jackson_hmc" />-->
+    <!--</list>-->
+    <!--</property>-->
+    <!--</bean>-->
+    <!--<bean id="byteArray_hmc" class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />&lt;!&ndash; 处理.. &ndash;&gt;-->
+    <!--<bean id="string_hmc" class="org.springframework.http.converter.StringHttpMessageConverter" />&lt;!&ndash; 处理.. &ndash;&gt;-->
+    <!--<bean id="resource_hmc" class="org.springframework.http.converter.ResourceHttpMessageConverter" />&lt;!&ndash; 处理.. &ndash;&gt;-->
+    <!--<bean id="source_hmc" class="org.springframework.http.converter.xml.SourceHttpMessageConverter" />&lt;!&ndash; 处理.. &ndash;&gt;-->
+    <!--<bean id="xmlAwareForm_hmc" class="org.springframework.http.converter.xml.XmlAwareFormHttpMessageConverter" />&lt;!&ndash; 处理.. &ndash;&gt;-->
+    <!--<bean id="jaxb2RootElement_hmc" class="org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter" />&lt;!&ndash; 处理.. &ndash;&gt;-->
+    <!--<bean id="jackson_hmc" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter" />&lt;!&ndash; 处理json&ndash;&gt;-->
+
+
+    <!-- 总错误处理-->
+    <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <!--<property name="exceptionMappings">-->
+            <!--<props>-->
+                <!--&lt;!&ndash; 上传文件大于最大尺寸后转向出错页面 &ndash;&gt;-->
+                <!--<prop key="org.springframework.web.multipart.MaxUploadSizeExceededException">-->
+                    <!--redirect:/uploadError.jsp-->
+                <!--</prop>-->
+            <!--</props>-->
+        <!--</property>-->
+        <property name="defaultErrorView">
+            <value>/WEB-INF/pages/error.jsp</value>
+        </property>
+        <property name="defaultStatusCode">
+            <value>500</value>
+        </property>
+        <property name="warnLogCategory">
+            <value>org.springframework.web.servlet.handler.SimpleMappingExceptionResolver</value>
+        </property>
+    </bean>
+
+    <!--&lt;!&ndash; 允许对静态资源文件的访问 &ndash;&gt; -->
+    <!--<mvc:default-servlet-handler/>-->
+
+    <!-- 数据源 ,DBCP连接池-->
+    <!--<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">-->
+    <!--<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>-->
+    <!--<property name="url" value="jdbc:oracle:thin:@192.168.3.141:1521:xxx"/>-->
+    <!--<property name="username" value="xxxdb"/>-->
+    <!--<property name="password" value="xxxdb"/>-->
+    <!--<property name="initialSize" value="2"/>-->
+    <!--<property name="maxActive" value="10"/>-->
+    <!--<property name="maxIdle" value="10"/>-->
+    <!--<property name="maxWait" value="1000"/>-->
+    <!--<property name="poolPreparedStatements" value="true"/>-->
+    <!--</bean>-->
+
+    <!-- JNDI数据源
+    <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName">
+            <value>jdbc/xxx</value>
+        </property>
+    </bean>
+    -->
+
+    <!-- JDBC模板 -->
+    <!--<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate" >-->
+    <!--<property name="dataSource" ref="dataSource" />-->
+    <!--</bean>-->
+    <!-- 事务管理器 -->
+    <!--<bean id="transactionManager"-->
+    <!--class="org.springframework.jdbc.datasource.DataSourceTransactionManager">-->
+    <!--<property name="dataSource" ref="dataSource" />-->
+    <!--</bean>-->
+    <!-- 用注解来实现事务管理 -->
+    <!--<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>-->
+
+    <!-- 用于持有ApplicationContext,可以使用SpringContextHolder.getBean('xxxx')的静态方法得到spring bean对象 -->
+    <!--<bean class="com.xxxxx.SpringContextHolder" lazy-init="false" />  -->
+
+</beans>
