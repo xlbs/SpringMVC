@@ -1,5 +1,6 @@
 package com.springmvc.controller;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -12,6 +13,8 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping(value = "/viewTest")
 public class ViewControllerTest {
+
+    private Logger log = Logger.getLogger(ViewControllerTest.class);
 
 //    public static void main(String[] args) {
 //        StringBuffer sb = new StringBuffer();
@@ -28,6 +31,7 @@ public class ViewControllerTest {
 //        List<Map> list = DAOFactory.getInstance().getQueryInterface().querySqlReturnListMap(sb.toString());
 //        System.out.print(list.toString());
         mav.setViewName("index.ftl");
+        log.info("ftlTest");
         return mav;
     }
 
@@ -35,6 +39,7 @@ public class ViewControllerTest {
     public ModelAndView jspView(){
         ModelAndView mav = new ModelAndView();
         mav.setViewName("index.jsp");
+        log.info("jspTest");
         return mav;
     }
 
@@ -42,6 +47,7 @@ public class ViewControllerTest {
     public ModelAndView htmlView(){
         ModelAndView mav = new ModelAndView();
         mav.setViewName("index.html");
+        log.info("htmlTest");
         return mav;
     }
 
@@ -49,6 +55,7 @@ public class ViewControllerTest {
     public ModelAndView echartsTest(){
         ModelAndView mav = new ModelAndView();
         mav.setViewName("echarts/echarts.jsp");
+        log.info("echartsTest");
         return mav;
     }
 
