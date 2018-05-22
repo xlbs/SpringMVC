@@ -1,6 +1,6 @@
 package com.springmvc.controller;
 
-import com.springmvc.service.intf.IDataOperat;
+import com.springmvc.service.intf.IDataOperatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,7 +19,7 @@ import java.util.Map;
 public class DateBaseControllerTest {
 
     @Autowired
-    private IDataOperat iTestDataBase;
+    private IDataOperatService iDataOperatService;
 
     /**
      * 查询
@@ -29,7 +29,7 @@ public class DateBaseControllerTest {
     public List<Map> querySql(){
         StringBuffer sb = new StringBuffer();
         sb.append("select * from u_unit");
-        return iTestDataBase.querySql(sb.toString());
+        return iDataOperatService.querySql(sb.toString());
     }
 
 
