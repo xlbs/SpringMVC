@@ -20,7 +20,6 @@
 </head>
 <body>
 
-    <img src="static/img/testimg.jpg">
     <div id="echartsId" style="height:400px;"></div>
     <div id="echartsId1" style="height:400px;"></div>
 
