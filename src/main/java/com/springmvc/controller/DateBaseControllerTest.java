@@ -28,7 +28,7 @@ public class DateBaseControllerTest {
     @RequestMapping(value = "/querySql", method={RequestMethod.GET, RequestMethod.POST})
     public List<Map> querySql(){
         StringBuffer sb = new StringBuffer();
-        sb.append("select * from u_unit");
+        sb.append("SHOW TABLES");
         return iDataOperatService.querySql(sb.toString());
     }
 
