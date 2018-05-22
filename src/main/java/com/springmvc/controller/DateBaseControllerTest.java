@@ -16,7 +16,7 @@ import java.util.Map;
  **/
 @RestController
 @RequestMapping(value = "/dateBase")
-public class TestDateBaseController {
+public class DateBaseControllerTest {
 
     @Autowired
     private IDataOperat iTestDataBase;
