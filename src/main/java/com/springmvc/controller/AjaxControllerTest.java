@@ -19,6 +19,9 @@ import java.util.Map;
 @RequestMapping(value = "ajax")
 public class AjaxControllerTest {
 
+
+
+
     //produces = {"text/html;charset=UTF-8;"}解决中文乱码
     @RequestMapping(value = "/ajaxTest", produces = {"text/html;charset=UTF-8;"})
     public String ajaxTest() throws Exception {
